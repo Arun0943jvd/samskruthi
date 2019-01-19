@@ -1,0 +1,141 @@
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Customer Details</title>
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <!-- Angular web application framework -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.5/angular.min.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+
+    <script type="text/javascript" src="angular-local-storage.min.js"></script>
+    <script type="text/javascript" src="route.js" ></script>
+    
+    <script type="text/javascript" src="app.js"></script>
+    <!-- Our CSS -->
+    <link rel="stylesheet" type="text/css" href="styles.css">
+
+    <!-- Our Angular app -->
+  
+  </head>
+  <body ng-app="CustomerApp" ng-controller="CustomerController">
+
+ <!--  Start Customer Display Section -->
+
+    <div class="alert alert-light border border-secondary" role="alert">
+
+  <!-- Content here -->
+
+      <div class="row">
+        <div class="col-12">
+          <span class="col-2"><b>Customer List</b></span>
+          <span class="col-4"><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">Add New</button> </span>
+<!--   Start  Error  Display Section --> 
+          <span class="col-4 alert alert-warning" role="alert" ng-if="errorMsg">{{errorMsg}}</span>
+          <span class="col-2"><input type="search" ng-model="nameFilter" class="form-control test-search" id="search-input" placeholder="Search by Name" autocomplete="off" spellcheck="false" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-owns="algolia-autocomplete-listbox-0" dir="auto"></span>
+        </div>
+      </div>
+<!--   End  Error  Display Section -->      
+      <hr>
+      <div class="row"> 
+        <!--   Start CustomerList  Display Section -->
+        <div class="col-6">
+          <div class="col-12">
+            <div  ng-repeat="customer  in customersList | orderBy : 'first_name' : isReverse |  filter: nameFilter">
+                <div class="shadow p-3 mb-5 bg-white rounded  border border-dark">
+                  <a id="customerListCancel" class="close" aria-label="Close" data-toggle="modal" data-target="#deleteModal" data-ng-click="assignDeleteCustomer(customer)"><span aria-hidden="true">&times;</span></a>
+                 <br>
+                 <a  href="" ng-click="selectCustomer(customer)">
+                  <div class="col-12"><i class="fa fa-user" aria-hidden="true"></i>
+                    <b>{{customer.first_name}}&nbsp;{{customer.last_name}}</b></div>
+                  <div class="col-12">Location:  {{customer.location}}</div>
+                  <div class="col-12">Email:  {{customer.email}}</div>
+                </a>
+                <br>
+              </div>
+            <br>
+          </div>
+        </div>
+      </div>
+<!--  End CustomerList Display Section -->
+
+<!--  Start Selected Customer Display Section -->
+
+      <div class="shadow p-3 mb-5 bg-white rounded border-left col-6">
+          <div class="col-12"><i class="fa fa-user" aria-hidden="true"></i>&nbsp;<b>Customer Name : &nbsp;{{selectedCustomer.first_name}}&nbsp;{{selectedCustomer.last_name}}</b></div><br>
+          <div class="col-12"><i class="fa fa-map-marker" aria-hidden="true"></i>&nbsp;Location : {{selectedCustomer.location}}</div><br>
+          <div class="col-12"><i class="fa fa-envelope" aria-hidden="true"></i>&nbsp; Email : {{selectedCustomer.email}}</div>
+          <br>
+          <div class="input-group mb-3">
+          <input type="text" class="form-control" placeholder="Recipient's username" aria-label="Recipient's username" aria-describedby="button-addon2">
+          <div class="input-group-append">
+            <button class="btn btn-outline-secondary" type="button">Add Customer</button>
+          </div>
+           
+        </div>
+
+         <button class="btn btn-primary" type="button" ng-click="reArrangeList(buttonText)">{{buttonText}}</button>
+      </div>
+
+<!--  End Selected Customer Display Section -->
+
+     </div>
+    </div> 
+
+<!--  End Customer Display Section -->   
+
+<!--  Add Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Add Customer</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+       <div class="col-12"><span class="col-4"><i class="fa fa-user" aria-hidden="true"></i>&nbsp; Name :</span><span class="col-8"><input type="text" class="form-control" name="first_name" data-ng-model="newCustomer.first_name"></span></div>
+          <div class="col-12"><span class="col-4"><i class="fa fa-map-marker" aria-hidden="true"></i>&nbsp; Location : </span><span class="col-8"><input type="text" class="form-control" name="location" data-ng-model="newCustomer.location"></span></div>
+          <div class="col-12"><span class="col-4"><i class="fa fa-envelope" aria-hidden="true"></i>&nbsp;Email : </span><span class="col-8"><input type="text" class="form-control" name="email" data-ng-model="newCustomer.email"></span></div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="addCustomer()">Add</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!--  End Add Modal -->
+
+
+<!--  Start Delete Modal -->
+
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Delete Customer</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+       <div class="col-12">
+        <h3>Are you sure to delete this customer?</h3></div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="deleteCustomer()">Yes</button>
+        <button type="button" class="btn btn-primary" data-dismiss="modal">No</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!--  End Delete Modal -->
+  </body>
+</html>

@@ -1,0 +1,26 @@
+/**** Begin styles for all views. ****/
+body {
+  font-family: Sans-Serif;
+  margin: 20px;
+}
+
+a {
+    color: #000000;
+  }
+
+*, *:before, *:after {
+  -moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: border-box;
+}
+
+#customerListCancel:not(:hover)  { 
+  opacity: 0;
+}
+
+.test-search{
+  
+  display:inline;
+  width: 22%; 
+  float: right;
+}
+
+ 
